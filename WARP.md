@@ -45,7 +45,7 @@ The codebase is minimal with a single-file architecture pattern:
 ### Key Components
 
 #### Data Structures
-- **`struct Body`**: Represents physical properties (mass, location[2], velocity[2])
+- **`struct Body`**: Represents physical properties (mass, location[2], velocity[2], force[2])
 - **`struct particles`**: Linked list node containing Body, ID, and pointer to next particle
 
 #### Simulation Flow
@@ -55,11 +55,21 @@ The codebase is minimal with a single-file architecture pattern:
    - Returns head of linked list
 
 2. **Render Loop** (in `main.c`):
-   - `Gravitate(p)`: Calculate gravitational forces and update velocities/positions (currently unimplemented)
+   - `Gravitate(p)`: Calculate gravitational forces between all particle pairs
+   - `updateParticles(p)`: Update particle velocities and positions based on forces
    - `DisplayParticles(p)`: Render particles as circles with radius = mass
    - Fixed 60 FPS
 
-3. **Display** (`DisplayParticles`):
+3. **Physics Calculations**:
+   - `Gravitate()`: Calculates gravitational forces between all particle pairs using F = G * (m1 * m2) / d²
+     - Iterates through all unique pairs of particles
+     - Accumulates forces in each axis independently (force[0] and force[1])
+     - Forces applied to both particles (Newton's third law)
+   - `updateParticles()`: Updates velocities and positions using Euler integration
+     - Updates velocity: v += (F/m) * dt
+     - Updates position: x += v * dt
+
+4. **Display** (`DisplayParticles`):
    - Green border around black canvas
    - Particles rendered as green circles scaled by mass
 
@@ -68,10 +78,14 @@ The codebase is minimal with a single-file architecture pattern:
 - `G`: Gravitational constant (1)
 - `dt`: Time step (0.0166666, approximately 1/60 for 60 FPS)
 
+#### Utility Functions
+- **`RandBetween(int a, int b)`**: Generates random double between a and b
+
 ### Known Issues
-- `Gravitate()` function is empty - gravity simulation not implemented
-- `GravitateOld()` exists but has bugs and is unused (incorrect force calculations, hardcoded array size)
-- Invalid C syntax on lines 48-49 of `mylib.h`: `public` keyword and misplaced variable declarations
+- `GravitateOld()` exists but has bugs and is unused (incorrect force calculations, hardcoded array size, boundary collision handling)
+- Current `Gravitate()` implementation calculates forces separately for X and Y axes, which may not accurately represent 2D vector physics
+- No boundary collision detection in current implementation
+- Memory management: No cleanup/free of particle linked list
 
 ### Development Notes
 - All simulation code is in header files (no separate .c files for library)
