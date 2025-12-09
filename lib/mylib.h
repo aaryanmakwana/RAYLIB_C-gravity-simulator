@@ -12,6 +12,7 @@ struct Body{
   double mass;
   double location[2];
   double velocity[2];
+  double force[2];
 };
 
 struct particles{
@@ -45,8 +46,6 @@ struct particles* CreateParticles(int x){
     n = n->nextParticle;
   }
 
-  public double Dist_mat[x][x];
-  public double Mass_mat[x];
   return p;
 }
 
@@ -63,7 +62,32 @@ void DisplayParticles(struct particles * p){
 
 
 void Gravitate(struct particles * p){
-  
+	while(p){
+		struct particles* n = p->nextParticle;
+		while(n){
+			double F_0 = (n->body.mass * G * p->body.mass) / ((n->body.location[0] - p->body.location[0])*(n->body.location[0] - p->body.location[0]));
+			p->body.force[0] += F_0;
+			n->body.force[0] += F_0;
+			double F_1 = (n->body.mass * G * p->body.mass) / ((n->body.location[1] - p->body.location[1])*(n->body.location[1] - p->body.location[1]));
+			p->body.force[1] += F_1;
+			n->body.force[1] += F_1;
+
+			n = n->nextParticle;
+		}
+		p = p->nextParticle;
+	}
+}
+
+void updateParticles(struct particles *p){
+	while(p){
+		p->body.velocity[0] += dt*(p->body.force[0] / p->body.mass);
+		p->body.velocity[1] += dt*(p->body.force[1]/p->body.mass);
+
+		p->body.location[0] += dt*p->body.velocity[0];
+		p->body.location[1] += dt*p->body.velocity[1];
+
+		p = p->nextParticle;
+	}
 }
 
 void GravitateOld(struct particles * p){
@@ -85,6 +109,7 @@ void GravitateOld(struct particles * p){
 
       n = n->nextParticle;
     }
+
 
     new_velocity[i][0] = p->body.velocity[0] + a[0]*dt;
     new_velocity[i][1] = p->body.velocity[1] + a[1]*dt;

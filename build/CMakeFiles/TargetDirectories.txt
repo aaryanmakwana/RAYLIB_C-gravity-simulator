@@ -1,0 +1,7 @@
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/gravity_sim_raylib.dir
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/edit_cache.dir
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/rebuild_cache.dir
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/list_install_components.dir
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/install.dir
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/install/local.dir
+/Users/apple/Documents/GITHUB/gravity_sim_raylib/build/CMakeFiles/install/strip.dir
