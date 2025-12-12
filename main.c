@@ -2,20 +2,25 @@
 
 
 int main(){
-    struct particles *p = CreateParticles(10);
+    struct particles *p = CreateParticles(15);
 
     InitWindow(W,H,"GRAVITY SIMULATION");
-    SetTargetFPS(60);
-  
+    SetTargetFPS(FPS);
+
     while (!WindowShouldClose()){
+
+
+            Gravitate(p);
+            updateParticles(p);
+            HandleParticleCollisions(p);
+
             BeginDrawing();
             ClearBackground(BLACK);
-            Gravitate(p);
-    
-               updateParticles(p);
+            DrawGravitationalFieldLines(p);
             DisplayParticles(p);
+
             EndDrawing();
     }
-    
+
     return 0;
 }
